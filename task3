@@ -1,0 +1,93 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+#读取 CSV 格式文件“task_3.1_zhihu_timeline_answer.csv”，将数据命名为 zhihu_data_answer，并查看前部数据(阅读参考文章 1、2);
+
+f = open('C:/Users/lvy/Desktop/task_3.1_zhihu_timeline_answer.csv',encoding='utf-8')
+df = pd.read_csv(f)
+df1 = df.to_csv('C:/Users/lvy/Desktop/zhihu_data_answer.csv')
+g = open('C:/Users/lvy/Desktop/zhihu_data_answer.csv',encoding='utf-8')
+df2 = pd.read_csv(g)
+print(df2.head(10))
+
+
+#提取“task_3.1_zhihu_timeline_answer.csv”中【回答点赞数】和【回答感谢数】列数据，制成散点图， 观察两者的关系(阅读参考文章 3、4);
+x = df2['回答点赞数'].tolist()
+y = df2['回答感谢数'].tolist()
+#print(x)
+#print(y)
+fig = plt.figure()  
+ax1 = fig.add_subplot(111)  #这些是作为单个整数编码的子绘图网格参数。例如，“111”表示“1×1网格，第一子图”，“234”表示“2×3网格，第四子图”
+plt.rcParams['font.sans-serif']=['SimHei'] #显示中文标签
+#设置标题  
+ax1.set_title('点赞和感谢')  
+#设置X轴标签  
+plt.xlabel('x')  
+#设置Y轴标签  
+plt.ylabel('y')  
+#画散点图  
+ax1.scatter(x,y,c = 'r',marker = 'o')  
+#设置图标  
+plt.legend('x1')  
+#显示所画的图  
+plt.show()  
+
+
+#提取“task_3.1_zhihu_timeline_answer.csv”中【问题回答数】和【问题关注数】列数据，制成散点图， 观察两者的关系;
+ans = df2['问题回答数'].tolist()
+att = df2['问题关注数'].tolist()
+#print(ans)
+#print(att)
+fig = plt.figure()  
+ax1 = fig.add_subplot(111)  #这些是作为单个整数编码的子绘图网格参数。例如，“111”表示“1×1网格，第一子图”，“234”表示“2×3网格，第四子图”
+plt.rcParams['font.sans-serif']=['SimHei'] #显示中文标签
+#设置标题  
+ax1.set_title('回答和关注')  
+#设置X轴标签  
+plt.xlabel('ans')  
+#设置Y轴标签  
+plt.ylabel('att')  
+#画散点图  
+ax1.scatter(ans,att,c = 'r',marker = 'o')  
+#设置图标  
+plt.legend('x1')  #给图加上图例
+#显示所画的图  
+plt.show()  
+
+
+
+#读取 CSV 格式文件“task_3.2_zhihu_timeline_article.csv”，将数据命名为 zhihu_data_article，并查看 前部数据;
+u = open('C:/Users/lvy/Desktop/task_3.2_zhihu_timeline_article.csv',encoding='utf-8')
+zhihu_data_article = pd.read_csv(u)
+print(zhihu_data_article.head(10))
+
+
+
+#提取“task_3.2_zhihu_timeline_article.csv”中【文章点赞数】和【文章评论数】列数据，制成散点图， 观察两者的关系;
+dz = zhihu_data_article['文章点赞数'].tolist()
+pl = zhihu_data_article['文章评论数'].tolist()
+#print(dz)
+#print(pl)
+fig = plt.figure()  
+ax1 = fig.add_subplot(111)  #这些是作为单个整数编码的子绘图网格参数。例如，“111”表示“1×1网格，第一子图”，“234”表示“2×3网格，第四子图”
+plt.rcParams['font.sans-serif']=['SimHei'] #显示中文标签
+#设置标题  
+ax1.set_title('点赞和评论')  
+#设置X轴标签  
+plt.xlabel('dz')  
+#设置Y轴标签  
+plt.ylabel('pl')  
+#画散点图  
+ax1.scatter(dz,pl,c = 'b',marker = 'v',label='x1')  
+#设置图标  
+plt.legend(loc='upper left')  #给图加上图例
+#显示所画的图  
+plt.show()  
+
+
+
+#提取“task_3.2_zhihu_timeline_article.csv”中【文章点赞数】低于 1000 的行数据，作出箱型图(阅读参 考文章 5)。
+k =zhihu_data_article[zhihu_data_article['文章点赞数']<1000]
+l = k['文章点赞数'].tolist()
+#print(l)
+plt.boxplot(l, patch_artist = 'False')  
+#plt.show()

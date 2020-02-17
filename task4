@@ -1,0 +1,41 @@
+#读取 Task_4_lianjia_sale.csv 数据(阅读参考文章 2、3)，利用 groupby 函数，以【区域】字段进行 groupby，
+#同时结合 agg 聚合函数统计各个区域平均房价;将统计所得平均房价命名为【区域平均价格】列 (阅读参考文章 4、5)
+import pandas as pd
+import numpy as np
+f = open('C:/Users/lvy/Desktop/Task_4_lianjia_sale.csv',encoding='utf-8')
+df = pd.read_csv(f)
+print(df.head(5))
+f.close
+#df['价格'].fillna(ave_price, inplace=True)
+df_avg = df.groupby('区域')['价格'].agg([('区域平均价格','mean')]).sort_values(by = '区域平均价格').round(2)
+
+print(df_avg.head(5))
+
+#利用 Pyecharts 将第(1)问所得数据作条形图(阅读参考文章 7)，图表标题为“上海各区域平均价格”(提示: 最后用 render_notebook()渲染显示出图片);
+from pyecharts.charts import Bar
+from pyecharts import options as opts
+from pyecharts.charts import Page,Pie
+from pyecharts.charts import Funnel, Page
+from pyecharts.globals import ThemeType
+x=df_avg.index.values.tolist()
+y=df_avg['区域平均价格'].values.tolist()
+
+price_bar = Bar()
+price_bar.add_xaxis(x)
+price_bar.add_yaxis('区域平均价格',y)
+price_bar.set_global_opts(title_opts=opts.TitleOpts(title='上海各区域平均价格'))
+price_bar.render_notebook()
+
+
+#利用 groupby 函数，以【装修类型】字段进行 groupby，同时结合 agg 聚合函数统计各个区域房源数量;
+#将统计所得数据命名为【房源数量】列;最后展示所得数据(将所得的 DataFrame 命名为 df_zhuangxiu);
+df_zhuangxiu = df.groupby('装修类型')['朝向'].agg([('房源数量','count')])
+print(df_zhuangxiu)
+
+from pyecharts import Pie
+v1=df_zhuangxiu.index.values.tolist()
+v2=df_zhuangxiu['房源数量'].values.tolist()
+pie =Pie("装修类型占比情况")
+pie.add("", v1, v2, is_label_show=True)
+pie.show_config()
+pie.render()

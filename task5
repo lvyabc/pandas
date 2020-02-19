@@ -1,0 +1,47 @@
+#根据任务 4 所统计的上海各个区的房均价数据，利用 Pyecharts 中的 Map，以上海地图为背景作可视化展示图
+import pandas as pd
+import numpy as np
+from pyecharts.charts import Map,Geo
+from pyecharts import options as opts
+f = open('C:/Users/lvy/Desktop/Task_4_lianjia_sale .csv',encoding='utf-8')
+df = pd.read_csv(f)
+print(df.head(5))
+f.close
+#df['价格'].fillna(ave_price, inplace=True)
+df_avg = df.groupby('区域')['价格'].agg([('区域平均价格','mean')]).sort_values(by = '区域平均价格').round(2)
+
+print(df_avg.head(5))
+
+#将数据处理成列表
+districts = ['金山区', '奉贤区', '嘉定区', '松江区', '青浦区', '宝山区', '闵行区 ', '浦东新区', '普陀区', '杨浦区', '虹口区', '长宁区', '静安区', '徐汇区', '黄浦区']
+df_avg1 = df_avg['区域平均价格'].tolist()
+list1 = [[districts[i],df_avg1[i]] for i in range(len(districts))]
+map_1 = Map()
+map_1.set_global_opts(
+    title_opts=opts.TitleOpts(title="上海区域房价"),
+    visualmap_opts=opts.VisualMapOpts(max_=50)  #最大数据范围
+    )
+map_1.add("上海区域房价", list1, maptype="上海")
+map_1.render('map1.html')
+
+
+#导入 tushare 数据包，提取 A 股基本数据信息，利用 groupby 函数统计每个省份的公司数量，并以中国地图 为背景作相应图表(阅读参考文章 2、3、4)
+import tushare as ts
+from pyecharts.charts import Map,Geo
+from pyecharts import options as opts
+df1=ts.get_stock_basics()
+#print(df1)
+gs_shu = df1.groupby('area')['name'].agg([('amount','count')])
+print(gs_shu)
+
+#将数据处理成列表
+locate = gs_shu.index.values.tolist()
+app_amo = gs_shu['amount'].tolist()
+list1 = [[locate[i],app_amo[i]] for i in range(len(locate))]
+map_1 = Map()
+map_1.set_global_opts(
+    title_opts=opts.TitleOpts(title="2019年全国各省公司数量"),
+    visualmap_opts=opts.VisualMapOpts(max_=50)  #最大数据范围
+    )
+map_1.add("2019年全国各省公司数量", list1, maptype="china")
+map_1.render('map2.html')
